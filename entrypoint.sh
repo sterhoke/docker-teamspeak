@@ -1,5 +1,36 @@
 #!/bin/bash
 
+# create directory for teamspeak files
+test -d /data/files || mkdir -p /data/files && chown teamspeak:teamspeak /data/files
+
+# create directory for teamspeak logs
+test -d /data/logs || mkdir -p /data/logs && chown teamspeak:teamspeak /data/logs
+
+cd "${TS_HOME}"
+for i in /data/*
+do
+  ln -sf "${i}"
+done
+
+# remove broken symlinks
+find -L "${TS_HOME}" -type l -delete
+
+# create symlinks for static files
+STATIC_FILES=(
+  query_ip_whitelist.txt
+  query_ip_blacklist.txt
+  ts3server.ini
+  ts3server.sqlitedb
+  ts3server.sqlitedb-shm
+  ts3server.sqlitedb-wal
+)
+for i in "${STATIC_FILES[@]}"
+do
+  ln -sf /data/"${i}"
+done
+
+cd /data
+
 # Set Configuration for Teamspeak in ts3server.ini
 # The following Lines will set the ts3server.ini
 
@@ -61,35 +92,6 @@ query_skipbruteforcecheck=${QUERY_SKIP_BRUTEFORCE_CHECK:-0}
 EOF
 
 # End ts3server.ini
-
-# create directory for teamspeak files
-test -d /data/files || mkdir -p /data/files && chown teamspeak:teamspeak /data/files
-
-# create directory for teamspeak logs
-test -d /data/logs || mkdir -p /data/logs && chown teamspeak:teamspeak /data/logs
-
 cd "${TS_HOME}"
-for i in /data/*
-do
-  ln -sf "${i}"
-done
-
-# remove broken symlinks
-find -L "${TS_HOME}" -type l -delete
-
-# create symlinks for static files
-STATIC_FILES=(
-  query_ip_whitelist.txt
-  query_ip_blacklist.txt
-  ts3server.ini
-  ts3server.sqlitedb
-  ts3server.sqlitedb-shm
-  ts3server.sqlitedb-wal
-)
-for i in "${STATIC_FILES[@]}"
-do
-  ln -sf /data/"${i}"
-done
-
 # Run Teamspeak server
 exec ./ts3server_minimal_runscript.sh inifile=ts3server.ini

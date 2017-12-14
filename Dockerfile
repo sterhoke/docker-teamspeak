@@ -22,7 +22,9 @@ RUN   groupadd -r $TS_USER \
       && useradd -r -m \
         -g $TS_USER \
         -d $TS_HOME \
-        $TS_USER
+        $TS_USER \
+      && mkdir /data \
+      && chown -R $TS_USER:$TS_USER ${TS_HOME} /data
 
 WORKDIR ${TS_HOME}
 

@@ -19,6 +19,7 @@ find -L "${TS_HOME}" -type l -delete
 STATIC_FILES=(
   query_ip_whitelist.txt
   query_ip_blacklist.txt
+  ts3db_mariadb.ini
   ts3server.ini
   ts3server.sqlitedb
   ts3server.sqlitedb-shm

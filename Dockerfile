@@ -1,6 +1,6 @@
 FROM  debian:stretch
 
-ENV   TS_VERSION=3.8.0 \
+ENV   TS_VERSION=3.11.0 \
       TS_FILENAME=teamspeak3-server_linux_amd64 \
       TS_USER=teamspeak \
       TS_HOME=/teamspeak
@@ -28,7 +28,7 @@ RUN   groupadd -r $TS_USER \
 
 WORKDIR ${TS_HOME}
 
-RUN  wget "http://dl.4players.de/ts/releases/${TS_VERSION}/${TS_FILENAME}-${TS_VERSION}.tar.bz2" -O ${TS_FILENAME}-${TS_VERSION}.tar.bz2 \
+RUN  wget "https://files.teamspeak-services.com/releases/server/${TS_VERSION}/${TS_FILENAME}-${TS_VERSION}.tar.bz2" -O ${TS_FILENAME}-${TS_VERSION}.tar.bz2 \
        && tar -xjf "${TS_FILENAME}-${TS_VERSION}.tar.bz2" \
        && rm ${TS_FILENAME}-${TS_VERSION}.tar.bz2 \
        && mv ${TS_FILENAME}/* ${TS_HOME} \
